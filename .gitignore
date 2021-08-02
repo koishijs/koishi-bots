@@ -1,0 +1,16 @@
+# ide
+.idea
+.vscode
+
+# build data
+**/dist
+
+# gocq private data
+.env/*.yml
+go-cqhttp/.temp
+
+# run data
+.koishi
+**/node_modules
+*lock*
+*.log
