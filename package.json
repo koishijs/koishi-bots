@@ -13,8 +13,10 @@
   },
   "dependencies": {
     "koishi": "^3.13.0",
-    "koishi-utils": "^4.2.3",
-    "koishi-adapter-onebot": "^3.1.0"
+    "koishi-adapter-onebot": "^3.1.0",
+    "koishi-plugin-mark": "^1.0.1",
+    "koishi-plugin-mongo": "^2.3.0",
+    "koishi-utils": "^4.2.3"
   },
   "devDependencies": {
     "child_process": "^1.0.2",
