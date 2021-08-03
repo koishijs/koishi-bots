@@ -21,3 +21,9 @@
 * `go-cqhttp/.temp` 储存 go-cqhttp 的运行数据
 
   该目录下的指定 bot 名字的文件夹，就是你的 bot 的 go-cqhttp 运行数据。
+
+## 认识指令
+
+* `go-cqhttp` 运行指定环境下的 gocq 服务器，支持运行多个。默认运行环境为 windows，具体使用 --help 参数查看帮助信息
+* `start:dev` 开发环境启动并带有自动重启，会合并 .env 下的带有 dev 关键词的配置
+* `start:pro` 生产环境启动，会合并 .env 下的带有 pro 关键词的配置
