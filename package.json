@@ -8,15 +8,18 @@
   },
   "scripts": {
     "go-cqhttp": "node cli/run-gocq.mjs",
-    "start:dev": "nodemon src/index.js"
+    "start:dev": "cross-env NODE_ENV=dev nodemon src/index.mjs",
+    "start:pro": "cross-env NODE_ENV=pro node    src/index.mjs"
   },
   "dependencies": {
     "koishi": "^3.13.0",
-    "koishi-utils": "^4.2.3"
+    "koishi-utils": "^4.2.3",
+    "koishi-adapter-onebot": "^3.1.0"
   },
   "devDependencies": {
     "child_process": "^1.0.2",
     "commander": "^8.1.0",
+    "cross-env": "^7.0.3",
     "js-yaml": "^4.1.0",
     "nodemon": "^2.0.12"
   }
