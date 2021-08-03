@@ -49,3 +49,23 @@ servers:
       host: 127.0.0.1
       port: 18080
 ```
+
+## 如何安装使用插件
+
+由于使用的为 module type，所以文件命名均采用 `.mjs` 结尾，你也可以使用 commonjs 将代码重写一遍。
+
+目录结构为 src 目录结构，src 下的 index.mjs 为 entry 文件。下面简单介绍一下该文件：
+
+```js
+const app = new App({
+  port: 8080,
+  // 你可以在这里插入你自己的 bot name ，从而自动加载 gocq bot 配置信息进入到 koishi 配置中
+  bots: getCqBots(['second-jie']).concat(/** @type { (import('koishi').BotOptions)[] } */ ([
+    // 添加除了 onebot 协议以外的 bot 配置，例如 discord 、 telegram
+  ]))
+})
+
+import * as common from 'koishi-plugin-common'
+// 在下面可以安装你需要的插件
+app.plugin(common)
+```
