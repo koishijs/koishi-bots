@@ -69,3 +69,8 @@ import * as common from 'koishi-plugin-common'
 // 在下面可以安装你需要的插件
 app.plugin(common)
 ```
+
+## 如何将你的 Bot 合并到该仓库
+
+* 基于 master 分支创建一个 `bots/your-bot-name` 的分支
+* 快乐的创造你的 bot
