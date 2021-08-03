@@ -40,7 +40,7 @@ program.version(
 const options = program.opts()
 
 const filePaths = {
-  gocqExe: r(`go-cqhttp/${options.system}/go-cqhttp`),
+  gocqExe: r(`go-cqhttp/${options.system}/go-cqhttp${/.*[w|W]indows.*/.test(options.system) ? '.exe' : ''}`),
   config: r(`config.yml`),
   botConfig: r(`.config/${options.name}.yml`),
   envConfig: r(`.env/${options.name}.${options.env}.yml`),
