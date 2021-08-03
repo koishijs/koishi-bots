@@ -21,4 +21,8 @@ app
   .plugin(ppt)
   .plugin(mark)
 
+app.on('mark/user-mark', async (_, mark, data) => {
+  return `打卡成功，已连续打卡 ${await data.users[mark.uid].all.continuous} 天。`
+})
+
 app.start().then(_ => {})
