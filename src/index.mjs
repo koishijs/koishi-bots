@@ -13,9 +13,12 @@ const app = new App({
 })
 
 import * as mongo from 'koishi-plugin-mongo'
+import * as ppt from 'koishi-plugin-puppeteer'
 import * as mark from 'koishi-plugin-mark'
 
 app.plugin(mongo, dotenv().database)
-app.plugin(mark)
+app
+  .plugin(ppt)
+  .plugin(mark)
 
 app.start().then(_ => {})
