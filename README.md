@@ -27,3 +27,25 @@
 * `go-cqhttp` 运行指定环境下的 gocq 服务器，支持运行多个。默认运行环境为 windows，具体使用 --help 参数查看帮助信息
 * `start:dev` 开发环境启动并带有自动重启，会合并 .env 下的带有 dev 关键词的配置
 * `start:pro` 生产环境启动，会合并 .env 下的带有 pro 关键词的配置
+
+## 编写你自己的配置文件
+
+* 给你的 `bot` 想一个名字
+* 在 `.config` 目录下创建自己的 `gocq bot` 可公布信息，比如账号配置信息
+> 请不要将自己的隐私数据填放在该配置文件中
+```yaml
+# bot-name.yml
+account:
+  uin: bot 的账号
+```
+* 在 `.env` 目录下创建环境配置文件，例如下面的配置（该文件不会提交到你的版本仓库）。
+```yaml
+# bot-name.env-name.yml
+account:
+  password: 你的 bot 密码
+
+servers:
+  - ws:
+      host: 127.0.0.1
+      port: 18080
+```
