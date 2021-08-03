@@ -8,7 +8,7 @@ import yaml from 'js-yaml'
     host: string,
     port: number,
     middlewares: {
-      'access-token': string
+      'access-token'?: string
     }
   }>[]
 }} EnvConfig
