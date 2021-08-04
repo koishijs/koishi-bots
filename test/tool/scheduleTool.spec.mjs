@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { ScheduleTool } from '../../src/tool/scheduleTool.mjs'
+import ScheduleTool from '../../src/tool/scheduleTool.mjs'
 import fs from 'fs'
 
 /** @typedef {{
@@ -20,12 +20,12 @@ describe('Basic', function () {
     const hourAndMinute = `${new Date().getHours()}-${new Date().getMinutes()}`
     const second = new Date().getSeconds() + 1
 
-    const mst = new ScheduleTool('test0', (jobDataItems) => async () => {
+    const st = new ScheduleTool('test0', (jobDataItems) => async () => {
       expect(new Date().getSeconds()).to.be.eq(second)
       expect(jobDataItems).to.deep.include(jobItem)
       done()
     })
-    mst.createSchedule(hourAndMinute, jobItem, second)
+    st.createSchedule(hourAndMinute, jobItem, second)
   })
 
   it('should clear target jobs.', (done) => {
@@ -34,13 +34,13 @@ describe('Basic', function () {
     const second0 = new Date().getSeconds() + 1
     const second1 = new Date().getSeconds() + 3
 
-    const mst = new ScheduleTool('test1', (jobDataItems) => async () => {
+    const st = new ScheduleTool('test1', (jobDataItems) => async () => {
       expect(new Date().getSeconds()).to.be.eq(second1)
       expect(jobDataItems).to.deep.include(jobItem)
       done()
     })
-    mst.createSchedule(hourAndMinute, jobItem, second0)
-    mst.createSchedule(hourAndMinute, jobItem, second1)
-    mst.clearSchedule((hourMinuteAndSecond) => hourMinuteAndSecond === `${hourAndMinute}-${second0}`)
+    st.createSchedule(hourAndMinute, jobItem, second0)
+    st.createSchedule(hourAndMinute, jobItem, second1)
+    st.clearSchedule((hourMinuteAndSecond) => hourMinuteAndSecond === `${hourAndMinute}-${second0}`)
   })
 })

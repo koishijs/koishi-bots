@@ -75,3 +75,5 @@ export class ScheduleTool {
     fs.writeFileSync(this.dataP, JSON.stringify(this.jobItemsMap, null, 2))
   }
 }
+
+export default ScheduleTool
