@@ -40,7 +40,10 @@ export class ScheduleTool {
 
     for (const hourMinuteAndSecond in this.jobItemsMap) {
       const [hour, minute, second] = hourMinuteAndSecond.split('-')
-      this.jobItemsMap[hourMinuteAndSecond].forEach(jobDataItem => this.createSchedule(`${hour}-${minute}`, jobDataItem, +second))
+      this.jobItemsMap[hourMinuteAndSecond].forEach(j => (j.ctime = new Date(j.ctime)))
+      this.jobs[hourMinuteAndSecond] = nodeSchedule.scheduleJob(new nodeSchedule.RecurrenceRule(
+        null, null, null, null, hour, minute, second
+      ), this.scheduleFun(this.jobItemsMap[hourMinuteAndSecond]))
     }
   }
 
@@ -62,7 +65,7 @@ export class ScheduleTool {
         null, null, null, null, hour, minute, second
       ), this.scheduleFun(jobDataItems))
     }
-    jobDataItem.ctime = new Date()
+    jobDataItem.ctime || (jobDataItem.ctime = new Date())
     jobDataItems.push(jobDataItem)
     fs.writeFileSync(this.dataP, JSON.stringify(this.jobItemsMap, null, 2))
   }
