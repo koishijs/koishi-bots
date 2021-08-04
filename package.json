@@ -10,7 +10,7 @@
     "go-cqhttp": "node cli/run-gocq.mjs",
     "start:dev": "cross-env NODE_ENV=dev nodemon src/index.mjs",
     "start:pro": "cross-env NODE_ENV=pro node    src/index.mjs",
-    "test": "mocha"
+    "test": "mocha **/*.spec.mjs"
   },
   "dependencies": {
     "koishi": "^3.13.0",
