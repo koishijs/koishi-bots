@@ -37,6 +37,11 @@ export class ScheduleTool {
       fs.writeFileSync(this.dataP, JSON.stringify(this.jobItemsMap))
     }
     this.jobItemsMap = JSON.parse(fs.readFileSync(this.dataP).toString())
+
+    for (const hourMinuteAndSecond in this.jobItemsMap) {
+      const [hour, minute, second] = hourMinuteAndSecond.split('-')
+      this.jobItemsMap[hourMinuteAndSecond].forEach(jobDataItem => this.createSchedule(`${hour}-${minute}`, jobDataItem, +second))
+    }
   }
 
   /**
@@ -51,6 +56,8 @@ export class ScheduleTool {
     let jobDataItems = this.jobItemsMap[key]
     if (!jobDataItems) {
       this.jobItemsMap[key] = jobDataItems = []
+    }
+    if (!this.jobs[key]) {
       this.jobs[key] = nodeSchedule.scheduleJob(new nodeSchedule.RecurrenceRule(
         null, null, null, null, hour, minute, second
       ), this.scheduleFun(jobDataItems))

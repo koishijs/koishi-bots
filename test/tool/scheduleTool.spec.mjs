@@ -20,7 +20,7 @@ describe('Basic', function () {
     const hourAndMinute = `${new Date().getHours()}-${new Date().getMinutes()}`
     const second = new Date().getSeconds() + 1
 
-    const st = new ScheduleTool('test0', (jobDataItems) => async () => {
+    const st = new ScheduleTool('test0', (jobDataItems) => () => {
       expect(new Date().getSeconds()).to.be.eq(second)
       expect(jobDataItems).to.deep.include(jobItem)
       done()
@@ -34,7 +34,7 @@ describe('Basic', function () {
     const second0 = new Date().getSeconds() + 1
     const second1 = new Date().getSeconds() + 3
 
-    const st = new ScheduleTool('test1', (jobDataItems) => async () => {
+    const st = new ScheduleTool('test1', (jobDataItems) => () => {
       expect(new Date().getSeconds()).to.be.eq(second1)
       expect(jobDataItems).to.deep.include(jobItem)
       done()
@@ -42,5 +42,20 @@ describe('Basic', function () {
     st.createSchedule(hourAndMinute, jobItem, second0)
     st.createSchedule(hourAndMinute, jobItem, second1)
     st.clearSchedule((hourMinuteAndSecond) => hourMinuteAndSecond === `${hourAndMinute}-${second0}`)
+  })
+
+  it('should load default config and create job.', (done) => {
+    const jobItem = /** @type {JobDataItem} */ ({ uid: '1', ctime: new Date() })
+    const hourAndMinute = `${new Date().getHours()}-${new Date().getMinutes()}`
+    const second0 = new Date().getSeconds() + 1
+    fs.writeFileSync('.data/schedules-test2.json', JSON.stringify({
+      [`${hourAndMinute}-${second0}`]: [jobItem]
+    }))
+
+    new ScheduleTool('test2', (jobDataItems) => () => {
+      expect(new Date().getSeconds()).to.be.eq(second0)
+      expect(jobDataItems).to.deep.include(jobItem)
+      done()
+    })
   })
 })
