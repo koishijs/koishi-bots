@@ -50,16 +50,12 @@ export default class MarkTool {
 
   async mark() {
     if (this.markData === undefined) {
-      const message = await this.refreshMarkData()
-      if (!message.success) return '无法获取最近打卡信息'
+      await this.refreshMarkData()
     }
     const lastMarkDate = dayjs(this.markData.createTime)
     const curDate      = dayjs()
-    const lastMarkIsToDay = curDate.isSame(lastMarkDate)
+    const lastMarkIsToDay = curDate.startOf('d').isSame(lastMarkDate.startOf('d'))
 
-    if (this.uid === undefined) {
-      return 'uid未获取到，无法打卡 请检查密码是否有误'
-    }
     const defaultDataObjs = {
       'twM': { dm: '01', mc: '[35.0~37.2]正常', alias: 'tw' },
       'yczk': { dm: '01', mc: '无症状', },
@@ -112,28 +108,28 @@ export default class MarkTool {
     })
     if (resp.status === 200) {
       const errors = resp.data?.errorInfoList ?? []
-      if (errors.length === 0) {
-        return '打卡失败'
+      if (errors.length > 0) {
+        throw new Error(errors.reduce((a, b) => a + `[${b.code}] ${b.message};\n`, ''))
       }
-      return errors.reduce((a, b) => a + `[${b.code}] ${b.message};\n`, '')
+      return
     }
-    return resp.statusText || '服务器响应错误'
+    throw new Error(resp.statusText || `${resp.status}: 服务器响应错误`)
   }
 
   async refreshMarkData() {
+    let resp
     try {
-      const resp = await this.axios.get('/content/student/temp/zzdk/lastone')
+      resp = await this.axios.get('/content/student/temp/zzdk/lastone')
       if (resp.status === 200) {
-        this.uid = resp.data['userid']
         this.markData = resp.data
-        return resp.data
+        return
       }
     } catch (e) {
       const message = await this.getMark((await this.getMarks(1)).marks[0]['DM'])
+      console.log('message.data', message.data)
       this.markData = message.data
-      return message
     }
-    return '服务器响应错误'
+    throw new Error(resp.statusText || `${resp.status}: 服务器响应错误`)
   }
 
   /**
@@ -180,6 +176,6 @@ export default class MarkTool {
   async login() {
     const resp = await this.axios.post(`/website/login?username=${this.username}&password=${strHandle(md5(this.password))}`)
     if (resp.data.error === true) throw new Error(resp.data.msg)
-    axios.defaults.headers.Cookie = resp.headers['set-cookie'][0].split(';')[0]
+    this.axios.defaults.headers.Cookie = resp.headers['set-cookie'][0].split(';')[0]
   }
 }

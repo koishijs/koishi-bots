@@ -22,17 +22,28 @@ Tables.extend('user', {
  */
 export const bindSchoolBindCmd = (ctx) => {
   const st = new ScheduleTool('mark' + (process.env.NODE_ENV === 'test' ? '-test' : ''), (jobData) => async () => {
-    const users = await ctx.database.get('user', jobData.map(j => j.uid))
+    const query = {}
+    jobData.map(j => j.uid.split(':')).forEach(([platform, id]) => {
+      if (!query[platform]) { query[platform] = [] }
+      query[platform].push(id)
+    })
+    const users = await ctx.database.get('user', query)
+
     for (let i = 0; i < users.length; i++) {
       try {
         const mt = new MarkTool(users[i].school.username, users[i].school.password)
         await mt.login()
         await mt.mark()
+        ctx.logger('school-bind').info(`${users[i].id}, 打卡成功`)
       } catch (e) {
-        const jobDataItem = jobData.filter(j => j.uid === users[i].id)[0]
+        ctx.logger('school-bind').error(e.message)
+        const jobDataItem = jobData.filter(j => {
+          const [platform, id] = j.uid.split(':')
+          return users[i][platform] === id
+        })[0]
         const [platform, selfId] = jobDataItem.bot.split(':')
         await ctx.getBot(platform, selfId).sendPrivateMessage(
-          jobDataItem.uid, `北京时间 ${new Date().toLocaleString()}：打卡失败请注意！\n${e.message}`
+          users[i][platform], `北京时间 ${new Date().toLocaleString()}：打卡失败请注意！\n${e.message}`
         )
       }
     }
