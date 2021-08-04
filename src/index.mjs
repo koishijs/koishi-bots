@@ -1,4 +1,4 @@
-import { App, Tables } from 'koishi'
+import { App } from 'koishi'
 
 import 'koishi-adapter-onebot'
 
