@@ -12,9 +12,7 @@ export class ScheduleTool {
   /** @type {Record<string, import('node-schedule').Job>} */
   jobs = {}
   /** @type {Record<string, JobDataItem[]>} */
-  jobItemsMap = {
-    '2-0-0': [], '12-0-0': []
-  }
+  jobItemsMap = {}
   /** @type {ScheduleFun} */
   scheduleFun
 
