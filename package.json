@@ -27,7 +27,11 @@
     "child_process": "^1.0.2",
     "commander": "^8.1.0",
     "cross-env": "^7.0.3",
+    "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
     "js-yaml": "^4.1.0",
-    "nodemon": "^2.0.12"
+    "mocha": "^8.4.0",
+    "nodemon": "^2.0.12",
+    "koishi-test-utils": "^6.1.0"
   }
 }
