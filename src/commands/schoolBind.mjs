@@ -16,27 +16,28 @@ Tables.extend('user', {
   }
 })
 
-export const st = new ScheduleTool('mark' + (process.env.NODE_ENV === 'test' ? '-test' : ''), (jobData) => async () => {
-  const users = await ctx.database.get('user', jobData.map(j => j.uid))
-  for (let i = 0; i < users.length; i++) {
-    try {
-      const mt = new MarkTool(users[i].school.username, users[i].school.password)
-      await mt.login()
-      await mt.mark()
-    } catch (e) {
-      const jobDataItem = jobData.filter(j => j.uid === users[i].id)[0]
-      const [platform, selfId] = jobDataItem.bot.split(':')
-      await ctx.getBot(platform, selfId).sendPrivateMessage(
-        jobDataItem.uid, `北京时间 ${new Date().toLocaleString()}：打卡失败请注意！\n${e.message}`
-      )
-    }
-  }
-})
-
 /**
  * @param {import('koishi').Context} ctx
+ * @return {ScheduleTool}
  */
 export const bindSchoolBindCmd = (ctx) => {
+  const st = new ScheduleTool('mark' + (process.env.NODE_ENV === 'test' ? '-test' : ''), (jobData) => async () => {
+    const users = await ctx.database.get('user', jobData.map(j => j.uid))
+    for (let i = 0; i < users.length; i++) {
+      try {
+        const mt = new MarkTool(users[i].school.username, users[i].school.password)
+        await mt.login()
+        await mt.mark()
+      } catch (e) {
+        const jobDataItem = jobData.filter(j => j.uid === users[i].id)[0]
+        const [platform, selfId] = jobDataItem.bot.split(':')
+        await ctx.getBot(platform, selfId).sendPrivateMessage(
+          jobDataItem.uid, `北京时间 ${new Date().toLocaleString()}：打卡失败请注意！\n${e.message}`
+        )
+      }
+    }
+  })
+
   ctx
     .command('school-bind <username:string> <password:string>', '绑定你的学校账号')
     .userFields(['school'])
@@ -110,4 +111,6 @@ export const bindSchoolBindCmd = (ctx) => {
         return e.message
       }
     })
+
+  return st
 }

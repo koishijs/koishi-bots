@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { expect } from 'chai'
 import { App } from 'koishi-test-utils'
-import { st, bindSchoolBindCmd } from '../../src/commands/schoolBind.mjs'
+import { bindSchoolBindCmd } from '../../src/commands/schoolBind.mjs'
 
 after(() => {
   fs.readdirSync('.data').filter(p => p.includes('test'))
@@ -15,7 +15,7 @@ describe('Demo App', function () {
   const app = new App({
     mockDatabase: true
   })
-  bindSchoolBindCmd(app)
+  const st = bindSchoolBindCmd(app)
   const superSes = app.session('001')
 
   before(async () => {
