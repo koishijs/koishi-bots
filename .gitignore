@@ -11,6 +11,7 @@ go-cqhttp/.temp
 
 # run data
 .koishi
+.data
 **/node_modules
 *lock*
 *.log
