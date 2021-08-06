@@ -1,8 +1,10 @@
+import { merge } from 'koishi-utils'
 import yaml from 'js-yaml'
 import fs from 'fs'
 import path from 'path'
 
 /** @typedef {{
+  cqBotNames: string[],
   database: {
     type: 'mongodb' | 'mysql' | string,
     host: string,
@@ -21,5 +23,8 @@ import path from 'path'
  */
 export default (env) => {
   !env && (env = process.env.NODE_ENV || 'dev')
-  return /** @type {EnvConfig} */ yaml.load(fs.readFileSync(path.resolve(process.cwd(), `.env/.${env}.yml`)))
+  return /** @type {EnvConfig} */ merge(
+    yaml.load(fs.readFileSync(path.resolve(process.cwd(), `.env/.${env}.yml`))),
+    yaml.load(fs.readFileSync(path.resolve(process.cwd(), `.env/.common.yml`))),
+  )
 }
