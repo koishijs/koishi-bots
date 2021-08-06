@@ -2,12 +2,18 @@ import { App } from 'koishi'
 
 import 'koishi-adapter-onebot'
 
+import dotenv from './dotenv.mjs'
 import getCqBots from './getCqBots.mjs'
 
-const app = new App({
-  port: 8080,
-  bots: getCqBots(['second-jie']).concat(/** @type { (import('koishi').BotOptions)[] } */ ([
-  ]))
-})
+;(async () => {
+  const bots = getCqBots(dotenv().cqBotNames || [])
+  try {
+    bots.push(...(await import('./.bots.mjs')).default)
+  } catch (e) {}
+  const app = new App({
+    bots,
+    port: 8080
+  })
 
-app.start().then(_ => {})
+  await app.start()
+})()
