@@ -5,7 +5,7 @@ import 'koishi-adapter-onebot'
 import dotenv from './dotenv.mjs'
 import getCqBots from './getCqBots.mjs'
 
-;(async () => {
+(async () => {
   const bots = getCqBots(dotenv().cqBotNames || [])
   try {
     bots.push(...(await import('./.bots.mjs')).default)
@@ -14,5 +14,9 @@ import getCqBots from './getCqBots.mjs'
     bots, ...dotenv().server
   })
 
+  try {
+    const events = await import('./.events.mjs')
+    events.beforeStart && events.beforeStart(app)
+  } catch (e) {}
   await app.start()
 })()
