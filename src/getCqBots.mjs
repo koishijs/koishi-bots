@@ -11,7 +11,7 @@ import yaml from 'js-yaml'
       'access-token'?: string
     }
   }>[]
-}} EnvConfig
+}} BotEnvConfig
  */
 
 /**
@@ -30,7 +30,7 @@ export default (botNames, env) => {
     const botConfig = /** @type {{
       account: { uin: string }
     }} */ yaml.load(fs.readFileSync(path.resolve(process.cwd(), `.config/${botName}.yml`)))
-    const envConfig = /** @type {EnvConfig} */ yaml.load(fs.readFileSync(path.resolve(process.cwd(), `.env/${botName}.${env}.yml`)))
+    const envConfig = /** @type {BotEnvConfig} */ yaml.load(fs.readFileSync(path.resolve(process.cwd(), `.env/${botName}.${env}.yml`)))
 
     const serverConfig = envConfig.servers.filter(server => !!server[schema])[0][schema]
 
