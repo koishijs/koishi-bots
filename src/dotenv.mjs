@@ -4,6 +4,9 @@ import fs from 'fs'
 import path from 'path'
 
 /** @typedef {{
+  server: {
+    port: number
+  },
   cqBotNames: string[],
   database: {
     type: 'mongodb' | 'mysql' | string,

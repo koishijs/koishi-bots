@@ -11,8 +11,7 @@ import getCqBots from './getCqBots.mjs'
     bots.push(...(await import('./.bots.mjs')).default)
   } catch (e) {}
   const app = new App({
-    bots,
-    port: 8080
+    bots, ...dotenv().server
   })
 
   await app.start()
