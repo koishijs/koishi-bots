@@ -5,26 +5,18 @@ import 'koishi-adapter-onebot'
 import dotenv from './dotenv.mjs'
 import getCqBots from './getCqBots.mjs'
 
-const app = new App({
-  port: 8080,
-  bots: getCqBots(['second-jie']).concat(/** @type { (import('koishi').BotOptions)[] } */ ([
-  ]))
-})
+(async () => {
+  const bots = getCqBots(dotenv().cqBotNames || [])
+  try {
+    bots.push(...(await import('./.bots.mjs')).default)
+  } catch (e) {}
+  const app = new App({
+    bots, ...dotenv().server
+  })
 
-import * as mongo from 'koishi-plugin-mongo'
-import * as ppt from 'koishi-plugin-puppeteer'
-import * as mark from 'koishi-plugin-mark'
-
-app.plugin(mongo, dotenv().database)
-app
-  .plugin(ppt)
-  .plugin(mark)
-
-app.on('mark/user-mark', async (_, mark, data) => {
-  return `打卡成功，已连续打卡 ${await data.users[mark.uid].all.continuous} 天。`
-})
-
-import { bindSchoolBindCmd } from './commands/schoolBind.mjs'
-bindSchoolBindCmd(app.select('gid', ...['onebot:872057998', 'onebot:779733740']))
-
-app.start().then(_ => {})
+  try {
+    const events = await import('./.events.mjs')
+    events.beforeStart && events.beforeStart(app)
+  } catch (e) {}
+  await app.start()
+})()
