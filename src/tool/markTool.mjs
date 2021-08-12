@@ -89,14 +89,18 @@ export default class MarkTool {
     }
 
     const formData = {
-      '_t_s_':         new Date().getTime(),
+      '_t_s_':         +new Date(),
       'sflx':          0,
       'dkly':          'baidu',
       'operationType': lastMarkIsToDay ? 'Update' : 'Create',
 
       'jzdValue':      [this.markData['jzdSheng']['dm'], this.markData['jzdShi'  ]['dm'], this.markData['jzdXian' ]['dm']].join(','),
       'bz':            '',
-      'dm':            lastMarkIsToDay ? this.markData.dm : ''
+      'dm':            lastMarkIsToDay ? this.markData.dm : '',
+      'xgym':          this.markData['xgym'],
+      'xgym1':         ['未接种', '已接种未完成', '已接种已完成'][+(this?.markData['xgym'] ?? 0)],
+      'hsjc':          this.markData['hsjc'],
+      'hsjc1':         +this.markData['hsjc'] ? '否' : '是'
       , ...dealDataObjs
       , ...mergeData
     }
