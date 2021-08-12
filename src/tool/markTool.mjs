@@ -88,17 +88,18 @@ export default class MarkTool {
       }1`]   = item?.mc ?? defaultDataObjs[key].mc
     }
 
+    const xgym = +(this.markData?.['xgym'] ?? 0)
     const formData = {
       '_t_s_':         +new Date(),
-      'sflx':          0,
+      'sflx':          this.markData['sflx'],
       'dkly':          'baidu',
       'operationType': lastMarkIsToDay ? 'Update' : 'Create',
 
       'jzdValue':      [this.markData['jzdSheng']['dm'], this.markData['jzdShi'  ]['dm'], this.markData['jzdXian' ]['dm']].join(','),
       'bz':            '',
       'dm':            lastMarkIsToDay ? this.markData.dm : '',
-      'xgym':          this.markData['xgym'],
-      'xgym1':         ['未接种', '已接种未完成', '已接种已完成'][+(this?.markData['xgym'] ?? 0)],
+      'xgym':          xgym,
+      'xgym1':         ['未接种', '已接种未完成', '已接种已完成'][xgym],
       'hsjc':          this.markData['hsjc'],
       'hsjc1':         +this.markData['hsjc'] ? '否' : '是'
       , ...dealDataObjs
