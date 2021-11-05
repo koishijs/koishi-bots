@@ -179,7 +179,7 @@ export default class MarkTool {
   }
 
   async login() {
-    const resp = await this.axios.post(`/website/login?username=${this.username}&password=${strHandle(md5(this.password))}`)
+    const resp = await this.axios.post(`/website/login?uname=${this.username}&pd_mm=${strHandle(md5(this.password))}`)
     if (resp.data.error === true) throw new Error(resp.data.msg)
     this.axios.defaults.headers.Cookie = resp.headers['set-cookie'][0].split(';')[0]
   }
