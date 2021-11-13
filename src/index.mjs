@@ -1,3 +1,4 @@
+import './hack-koishi.mjs'
 import { App } from 'koishi'
 
 import 'koishi-adapter-onebot'
